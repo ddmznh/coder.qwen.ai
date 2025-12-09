@@ -1,0 +1,3 @@
+51090316021322000026 http://liveplay.example.com/stream/51090316021322000026.m3u8?auth_key=xxx
+51090316021322000027 http://liveplay.example.com/stream/51090316021322000027.m3u8?auth_key=yyy
+51090316021322000028 http://liveplay.example.com/stream/51090316021322000028.m3u8?auth_key=zzz

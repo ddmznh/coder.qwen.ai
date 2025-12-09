@@ -1,0 +1,29 @@
+# docker-compose.yml
+version: '3'
+services:
+  recorder-manager:
+    image: jrottenberg/ffmpeg
+    volumes:
+      - ./output:/output
+      - ./devices.txt:/devices.txt
+    command: >
+      sh -c "
+        while IFS= read -r line; do
+          if [ -n \"$$line\" ]; then
+            DEVICE_ID=$$(echo $$line | awk '{print $$1}')
+            M3U8_URL=$$(echo $$line | cut -d' ' -f2-)
+            mkdir -p /output
+            (
+              while true; do
+                echo \"[$$(date)] 开始录制 $$DEVICE_ID\"
+                ffmpeg -i \"$$M3U8_URL\" -c copy -t 300 -f mp4 -y \"/output/$$DEVICE_ID.mp4\" >/dev/null 2>&1
+                echo \"[$$(date)] $$DEVICE_ID 录制完成（5分钟），重新开始...\"
+                sleep 1
+              done
+            ) &
+          fi
+        done < /devices.txt
+        wait
+      "
+    restart: always
+    network_mode: bridge
