@@ -1,0 +1,15 @@
+[Unit]
+Description=Recording Manager Service
+After=network.target
+
+[Service]
+Type=forking
+User=root
+WorkingDirectory=/workspace/recording_service
+ExecStart=/workspace/recording_service/start_all.sh
+ExecStop=/workspace/recording_service/stop_all.sh
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
